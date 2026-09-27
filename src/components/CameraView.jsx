@@ -10,9 +10,22 @@ export default function CameraView({
   const videoRef = useRef(null);
   const [devices, setDevices] = useState([]);
   const [selectedDeviceId, setSelectedDeviceId] = useState('');
-  const isMirrored = true;
+  const [isMirrored, setIsMirrored] = useState(() => {
+    const saved = localStorage.getItem('photobooth_camera_mirror');
+    return saved === null ? true : saved === 'true';
+  });
   const [cameraError, setCameraError] = useState(null);
   const [streamReady, setStreamReady] = useState(false);
+
+  // Sync mirror setting dynamically if changed in admin
+  useEffect(() => {
+    const handleStorage = () => {
+      const saved = localStorage.getItem('photobooth_camera_mirror');
+      setIsMirrored(saved === null ? true : saved === 'true');
+    };
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
 
   // Capture State
   const [isShooting, setIsShooting] = useState(false);
@@ -260,7 +273,7 @@ export default function CameraView({
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              transform: 'scaleX(-1)'
+              transform: isMirrored ? 'scaleX(-1)' : 'none'
             }}
           />
 

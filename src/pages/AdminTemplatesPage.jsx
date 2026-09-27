@@ -22,7 +22,9 @@ import {
   FolderArchive,
   ChevronRight,
   ShieldAlert,
-  Clock
+  Clock,
+  SlidersHorizontal,
+  FlipHorizontal
 } from 'lucide-react';
 import { getAllPhotosFromStore, deletePhotoFromStore, deleteAllPhotosFromStore } from '../utils/photoStorage';
 
@@ -180,6 +182,20 @@ export default function AdminTemplatesPage({
   const [errorMsg, setErrorMsg] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
   const fileInputRef = useRef(null);
+
+  // Camera Mirror Setting State
+  const [isCameraMirrored, setIsCameraMirrored] = useState(() => {
+    const saved = localStorage.getItem('photobooth_camera_mirror');
+    return saved === null ? true : saved === 'true';
+  });
+
+  const handleToggleMirror = (mirrored) => {
+    setIsCameraMirrored(mirrored);
+    localStorage.setItem('photobooth_camera_mirror', mirrored ? 'true' : 'false');
+    window.dispatchEvent(new Event('storage'));
+    setSuccessMsg(`Pengaturan kamera disimpan: ${mirrored ? 'Mode Mirror (Cermin) Aktif' : 'Mode Non-Mirror (Normal) Aktif'}.`);
+    setTimeout(() => setSuccessMsg(null), 3500);
+  };
 
   // Gallery Photos State
   const [photos, setPhotos] = useState([]);
@@ -721,6 +737,22 @@ export default function AdminTemplatesPage({
               </li>
 
               <li>
+                <button
+                  onClick={() => {
+                    setActiveTab('settings');
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className={`wp-menu-item ${activeTab === 'settings' ? 'active' : ''}`}
+                >
+                  <span className="wp-menu-icon">
+                    <SlidersHorizontal size={15} />
+                    <span>Pengaturan Kamera</span>
+                  </span>
+                  {activeTab === 'settings' && <ChevronRight size={14} style={{ opacity: 0.7 }} />}
+                </button>
+              </li>
+
+              <li>
                 <Link
                   to="/camera"
                   className="wp-menu-item"
@@ -1247,6 +1279,181 @@ export default function AdminTemplatesPage({
                       })}
                     </div>
                   )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* =========================================================================
+              TAB 3: PENGATURAN KAMERA & SISTEM
+              ========================================================================= */}
+          {activeTab === 'settings' && (
+            <div>
+              {/* Header Halaman */}
+              <div className="wp-page-header">
+                <div>
+                  <h1 className="wp-page-title">
+                    Pengaturan Kamera & Kiosk
+                  </h1>
+                  <p className="wp-page-subtitle">
+                    Konfigurasi orientasi cermin (mirror), orientasi gambar, dan preferensi bilik photobooth
+                  </p>
+                </div>
+              </div>
+
+              {/* Camera Mirror Postbox */}
+              <div className="wp-postbox">
+                <div className="wp-postbox-header">
+                  <span>Orientasi Cermin Kamera (Mirror Mode)</span>
+                </div>
+                <div className="wp-postbox-body" style={{ padding: '20px' }}>
+                  <p style={{ fontSize: '13px', color: '#50575e', marginTop: 0, marginBottom: '18px', lineHeight: 1.6 }}>
+                    Atur apakah tampilan layar langsung (live camera preview) dan hasil tangkapan foto strip dibalik secara horizontal (efek cermin) atau menggunakan orientasi normal tanpa cermin.
+                  </p>
+
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                    gap: '16px',
+                    marginBottom: '20px'
+                  }}>
+                    {/* Option 1: Mirror Mode (Cermin) */}
+                    <div
+                      onClick={() => handleToggleMirror(true)}
+                      style={{
+                        border: isCameraMirrored ? '2px solid #2271b1' : '1px solid #c3c4c7',
+                        backgroundColor: isCameraMirrored ? '#f0f6fc' : '#ffffff',
+                        borderRadius: '4px',
+                        padding: '16px',
+                        cursor: 'pointer',
+                        transition: 'all 0.15s ease',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <div style={{
+                            width: '36px',
+                            height: '36px',
+                            borderRadius: '4px',
+                            backgroundColor: isCameraMirrored ? '#2271b1' : '#f0f0f1',
+                            color: isCameraMirrored ? '#ffffff' : '#50575e',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}>
+                            <FlipHorizontal size={20} />
+                          </div>
+                          <div>
+                            <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: '#1d2327' }}>
+                              Mode Mirror (Cermin)
+                            </h4>
+                            <span style={{ fontSize: '11px', color: '#646970' }}>Webcam / Kamera Depan</span>
+                          </div>
+                        </div>
+                        {isCameraMirrored && (
+                          <span style={{
+                            backgroundColor: '#00a32a',
+                            color: '#ffffff',
+                            fontSize: '11px',
+                            fontWeight: 700,
+                            padding: '2px 8px',
+                            borderRadius: '2px'
+                          }}>
+                            AKTIF
+                          </span>
+                        )}
+                      </div>
+                      <p style={{ margin: 0, fontSize: '12px', color: '#50575e', lineHeight: 1.5 }}>
+                        Tampilan kamera bertindak seperti cermin (gerak ke kiri tampak ke kiri). Sangat intuitif dan natural untuk pengunjung saat berpose di layar kiosk photobooth.
+                      </p>
+                    </div>
+
+                    {/* Option 2: Non-Mirror Mode (Normal) */}
+                    <div
+                      onClick={() => handleToggleMirror(false)}
+                      style={{
+                        border: !isCameraMirrored ? '2px solid #2271b1' : '1px solid #c3c4c7',
+                        backgroundColor: !isCameraMirrored ? '#f0f6fc' : '#ffffff',
+                        borderRadius: '4px',
+                        padding: '16px',
+                        cursor: 'pointer',
+                        transition: 'all 0.15s ease',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <div style={{
+                            width: '36px',
+                            height: '36px',
+                            borderRadius: '4px',
+                            backgroundColor: !isCameraMirrored ? '#2271b1' : '#f0f0f1',
+                            color: !isCameraMirrored ? '#ffffff' : '#50575e',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}>
+                            <Camera size={20} />
+                          </div>
+                          <div>
+                            <h4 style={{ margin: 0, fontSize: '14px', fontWeight: 600, color: '#1d2327' }}>
+                              Mode Non-Mirror (Normal)
+                            </h4>
+                            <span style={{ fontSize: '11px', color: '#646970' }}>DSLR / Sony ZV-E10 / Kamera Belakang</span>
+                          </div>
+                        </div>
+                        {!isCameraMirrored && (
+                          <span style={{
+                            backgroundColor: '#00a32a',
+                            color: '#ffffff',
+                            fontSize: '11px',
+                            fontWeight: 700,
+                            padding: '2px 8px',
+                            borderRadius: '2px'
+                          }}>
+                            AKTIF
+                          </span>
+                        )}
+                      </div>
+                      <p style={{ margin: 0, fontSize: '12px', color: '#50575e', lineHeight: 1.5 }}>
+                        Tampilan kamera dan hasil jepretan foto tidak dibalik secara horizontal. Direkomendasikan untuk kamera capture card profesional, DSLR, atau kamera belakang.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Info Status Box */}
+                  <div style={{
+                    backgroundColor: '#f6f7f7',
+                    borderLeft: '4px solid #2271b1',
+                    padding: '12px 16px',
+                    borderRadius: '2px',
+                    fontSize: '12px',
+                    color: '#2c3338',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '12px',
+                    flexWrap: 'wrap'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <CheckCircle2 size={16} color="#2271b1" />
+                      <span>Status saat ini: <strong>{isCameraMirrored ? 'Mode Mirror Aktif (Efek Cermin)' : 'Mode Non-Mirror Aktif (Normal)'}</strong></span>
+                    </div>
+                    <Link
+                      to="/camera"
+                      target="_blank"
+                      className="wp-button-secondary"
+                      style={{ fontSize: '12px', padding: '4px 12px' }}
+                    >
+                      <ExternalLink size={13} />
+                      <span>Uji Coba di Bilik Kamera</span>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
