@@ -1,0 +1,798 @@
+:root {
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Clean White Studio Palette */
+  --bg-app: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-surface-hover: #f1f5f9;
+  --bg-surface-active: #e2e8f0;
+
+  --border-subtle: #e2e8f0;
+  --border-medium: #cbd5e1;
+  --border-strong: #94a3b8;
+
+  --accent-action: #0f172a;
+  --accent-action-hover: #1e293b;
+  --accent-blue: #2563eb;
+  --accent-blue-hover: #1d4ed8;
+
+  --text-main: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+
+  /* WordPress Enterprise Official Design Tokens */
+  --wp-dark: #1d2327;
+  --wp-dark-hover: #2c3338;
+  --wp-dark-sub: #131619;
+  --wp-blue: #2271b1;
+  --wp-blue-hover: #135e96;
+  --wp-blue-active: #0a4b78;
+  --wp-blue-light: #72aee6;
+  --wp-bg: #f0f0f1;
+  --wp-card: #ffffff;
+  --wp-border: #c3c4c7;
+  --wp-border-subtle: #f0f0f1;
+  --wp-input-border: #8c8f94;
+  --wp-text-main: #1d2327;
+  --wp-text-body: #3c434a;
+  --wp-text-muted: #646970;
+  --wp-text-placeholder: #8c8f94;
+  --wp-green: #00a32a;
+  --wp-green-bg: #edfaef;
+  --wp-green-border: #68de7c;
+  --wp-red: #d63638;
+  --wp-red-bg: #fcf0f1;
+  --wp-red-border: #f87171;
+  --wp-yellow: #996800;
+  --wp-yellow-bg: #fcf9e8;
+  --wp-yellow-border: #dba617;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* Accessible focus indicator */
+:focus-visible {
+  outline: 2px solid var(--wp-blue);
+  outline-offset: 2px;
+}
+
+/* Studio Surface Card */
+.studio-card {
+  background: var(--bg-surface);
+  border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+/* Interactive Buttons for Kiosk */
+.btn {
+  font-family: var(--font-main);
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  padding: 10px 18px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  user-select: none;
+}
+
+.btn-dark {
+  background-color: var(--accent-action);
+  color: #ffffff;
+  border-color: var(--accent-action);
+}
+
+.btn-dark:hover {
+  background-color: var(--accent-action-hover);
+}
+
+.btn-blue {
+  background-color: var(--accent-blue);
+  color: #ffffff;
+  border-color: var(--accent-blue);
+}
+
+.btn-blue:hover {
+  background-color: var(--accent-blue-hover);
+}
+
+.btn-outline {
+  background-color: var(--bg-surface);
+  border-color: var(--border-medium);
+  color: var(--text-main);
+}
+
+.btn-outline:hover {
+  background-color: var(--bg-surface-hover);
+  border-color: var(--border-strong);
+}
+
+.btn-outline:disabled,
+.btn-dark:disabled,
+.btn-blue:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Screen Flash Effect (Shutter snap) */
+@keyframes flashAnimation {
+  0% { opacity: 0; }
+  30% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.screen-flash {
+  position: fixed;
+  inset: 0;
+  background: #ffffff;
+  z-index: 9999;
+  pointer-events: none;
+  animation: flashAnimation 0.35s ease-out forwards;
+}
+
+/* Countdown Display */
+@keyframes countdownScale {
+  0% { transform: scale(0.8); opacity: 0.3; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.countdown-display {
+  animation: countdownScale 0.4s ease-out;
+  font-family: var(--font-mono);
+  font-size: 6.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9);
+}
+
+/* ==========================================================================
+   WORDPRESS ENTERPRISE DESIGN SYSTEM (MATCHING CONTOH: ABSENSI GURU SMAN 7)
+   ========================================================================== */
+.wp-admin-body {
+  background-color: #f0f0f1;
+  color: #3c434a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  font-size: 13px;
+  line-height: 1.4em;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 1. Mobile Topbar (< 768px) */
+.wp-mobile-topbar {
+  height: 52px;
+  background-color: #1d2327;
+  color: #f0f0f1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  border-bottom: 1px solid #2c3338;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  user-select: none;
+}
+
+@media (min-width: 769px) {
+  .wp-mobile-topbar {
+    display: none !important;
+  }
+}
+
+/* 2. WP Layout Wrap */
+.wp-layout-wrap {
+  display: flex;
+  flex: 1;
+  min-height: 100vh;
+}
+
+/* 3. WP Sidebar Navigation */
+.wp-sidebar {
+  width: 240px;
+  background-color: #1d2327;
+  color: #c3c4c7;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  border-right: 1px solid #2c3338;
+  z-index: 60;
+  user-select: none;
+  transition: transform 0.2s ease-in-out;
+}
+
+.wp-sidebar-brand {
+  padding: 16px 16px 14px;
+  border-bottom: 1px solid #2c3338;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wp-menu-section-label {
+  padding: 12px 16px 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8c8f94;
+}
+
+.wp-live-clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #2c3338;
+  padding: 3px 8px;
+  border-radius: 2px;
+  border: 1px solid #3c434a;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+
+.wp-menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.wp-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 10px 16px;
+  color: #c3c4c7;
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-left: 4px solid transparent;
+  text-align: left;
+  transition: background-color 0.12s ease, color 0.12s ease;
+  white-space: nowrap;
+}
+
+.wp-menu-item:hover {
+  background-color: #131619;
+  color: #72aee6;
+}
+
+.wp-menu-item.active {
+  background-color: #2271b1;
+  color: #ffffff;
+  font-weight: 600;
+  border-left-color: #72aee6;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.wp-menu-icon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wp-badge-count {
+  display: inline-block;
+  padding: 0 6px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+  height: 16px;
+  border-radius: 8px;
+  background-color: #2271b1;
+  color: #ffffff;
+}
+
+.wp-menu-item.active .wp-badge-count {
+  background-color: #ffffff;
+  color: #2271b1;
+}
+
+.wp-sidebar-footer {
+  padding: 10px 8px;
+  border-top: 1px solid #2c3338;
+  display: flex;
+  flex-direction: column;
+}
+
+.wp-sidebar-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 2px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #c3c4c7;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.12s ease;
+}
+
+.wp-sidebar-logout-btn:hover {
+  background-color: #2c3338;
+  color: #f87171;
+}
+
+.wp-sidebar-logout-btn:hover svg {
+  color: #f87171 !important;
+}
+
+/* 4. WP Main Canvas */
+.wp-main-canvas {
+  flex: 1;
+  background-color: #f0f0f1;
+  padding: 24px 28px 48px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.wp-page-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #c3c4c7;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 640px) {
+  .wp-page-header {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.wp-page-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1d2327;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.wp-page-subtitle {
+  font-size: 12px;
+  color: #646970;
+  margin: 3px 0 0;
+}
+
+/* 5. Postbox / Meta-box */
+.wp-postbox {
+  background-color: #ffffff;
+  border: 1px solid #c3c4c7;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+  border-radius: 2px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.wp-postbox-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #c3c4c7;
+  padding: 11px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #1d2327;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wp-postbox-body {
+  padding: 18px 16px;
+  font-size: 12px;
+  color: #3c434a;
+}
+
+/* 6. Notice Banners */
+.wp-notice {
+  background-color: #ffffff;
+  border: 1px solid #c3c4c7;
+  border-left-width: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+  margin-bottom: 18px;
+  padding: 10px 14px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 2px;
+}
+
+.wp-notice-success {
+  border-left-color: #00a32a;
+  color: #1e3a1e;
+  background-color: #ffffff;
+}
+
+.wp-notice-error {
+  border-left-color: #d63638;
+  color: #4a1515;
+  background-color: #ffffff;
+}
+
+/* 7. Authentic WordPress Buttons */
+.wp-button-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: #2271b1;
+  border: 1px solid #2271b1;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  min-height: 32px;
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.1s ease, border-color 0.1s ease;
+  user-select: none;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.08);
+}
+
+.wp-button-primary:hover {
+  background-color: #135e96;
+  border-color: #135e96;
+  color: #ffffff;
+}
+
+.wp-button-primary:active {
+  background-color: #0a4b78;
+  border-color: #0a4b78;
+}
+
+.wp-button-primary:disabled {
+  background-color: #a7aaad !important;
+  border-color: #a7aaad !important;
+  color: #ffffff !important;
+  cursor: not-allowed;
+}
+
+.wp-button-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: #f6f7f7;
+  border: 1px solid #2271b1;
+  color: #2271b1;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  min-height: 32px;
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.1s ease;
+  user-select: none;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+}
+
+.wp-button-secondary:hover {
+  background-color: #f0f0f1;
+  border-color: #135e96;
+  color: #135e96;
+}
+
+.wp-button-secondary:active {
+  background-color: #e0e0e0;
+}
+
+.wp-button-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.wp-button-destructive,
+.wp-button-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background-color: #ffffff;
+  border: 1px solid #d63638;
+  color: #d63638;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  min-height: 32px;
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.1s ease;
+  user-select: none;
+}
+
+.wp-button-destructive:hover,
+.wp-button-danger:hover {
+  background-color: #d63638;
+  border-color: #d63638;
+  color: #ffffff;
+}
+
+.wp-button-destructive:disabled,
+.wp-button-danger:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* 8. Input Elements */
+.wp-input {
+  border: 1px solid #8c8f94;
+  border-radius: 2px;
+  padding: 6px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #2c3338;
+  background-color: #ffffff;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.1s ease, box-shadow 0.1s ease;
+}
+
+.wp-input:focus {
+  border-color: #2271b1;
+  outline: 2px solid #2271b1;
+  outline-offset: -1px;
+}
+
+/* 9. WordPress List Table */
+.wp-list-table {
+  width: 100%;
+  text-align: left;
+  font-size: 12px;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border: 1px solid #c3c4c7;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.wp-list-table th {
+  background-color: #ffffff;
+  color: #2c3338;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 10px 14px;
+  border-bottom: 1px solid #c3c4c7;
+  user-select: none;
+}
+
+.wp-list-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #f0f0f1;
+  color: #3c434a;
+}
+
+.wp-list-table tr:hover td {
+  background-color: #f6f7f7;
+}
+
+/* 10. WordPress Confirm Delete Modal (Exact Match to Contoh) */
+.wp-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.wp-modal-box {
+  background-color: #ffffff;
+  border: 1px solid #c3c4c7;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  max-width: 440px;
+  width: 100%;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.wp-modal-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid #c3c4c7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fcf0f1;
+}
+
+.wp-modal-header h3 {
+  font-weight: 700;
+  font-size: 14px;
+  color: #d63638;
+  line-height: 1;
+  margin: 0;
+}
+
+.wp-modal-header p {
+  font-size: 11px;
+  color: #646970;
+  margin: 4px 0 0;
+}
+
+.wp-modal-close-btn {
+  color: #8c8f94;
+  background: transparent;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.1s ease;
+}
+
+.wp-modal-close-btn:hover {
+  color: #1d2327;
+  background-color: #ffffff;
+}
+
+.wp-modal-body {
+  padding: 20px 16px;
+  font-size: 12px;
+  color: #3c434a;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.wp-modal-item-highlight {
+  padding: 10px 12px;
+  background-color: #f6f7f7;
+  border-left: 4px solid #d63638;
+  border-top: 1px solid #c3c4c7;
+  border-bottom: 1px solid #c3c4c7;
+  border-right: 1px solid #c3c4c7;
+  border-radius: 2px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #1d2327;
+}
+
+.wp-modal-warning-box {
+  padding: 10px 12px;
+  background-color: #fcf9e8;
+  border: 1px solid #dba617;
+  border-radius: 2px;
+  font-size: 11px;
+  color: #996800;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.wp-modal-footer {
+  padding: 12px 16px;
+  background-color: #f6f7f7;
+  border-top: 1px solid #c3c4c7;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Mobile Drawer Styles (< 768px) */
+@media (max-width: 768px) {
+  .wp-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+    box-shadow: none;
+  }
+  .wp-sidebar.open {
+    transform: translateX(0);
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
+  }
+  .wp-main-canvas {
+    padding: 16px;
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-app);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-medium);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-strong);
+}
+
+/* Direct Edge-to-Edge Print Stylesheet */
+@page {
+  margin: 0;
+  size: auto;
+}
+
+@media print {
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  body * {
+    visibility: hidden;
+  }
+
+  #printable-photo-strip,
+  #printable-photo-strip * {
+    visibility: visible;
+  }
+
+  #printable-photo-strip {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff !important;
+    margin: 0;
+    padding: 0;
+  }
+
+  #printable-photo-strip img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    margin: auto;
+    box-shadow: none !important;
+  }
+}
