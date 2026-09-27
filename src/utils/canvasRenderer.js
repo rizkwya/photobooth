@@ -177,26 +177,25 @@ export function detectTransparentSlots(overlayImg, targetWidth, targetHeight, ex
  * Main render function
  */
 export async function renderPhotoStrip({
-  photos = [],          // Array of base64 photo strings
-  layout = { id: 'strip-3', photoCount: 3 }, // 'strip-3' | 'strip-4' | 'grid-4'
-  theme = {},           // Theme config object (colors, texts, custom logo, frameOverlay)
-  filterCss = 'none',   // CSS filter string
-  stickers = [],        // Array of { id, char, x, y, size } (normalized 0-1 coords)
+  photos,          // Array of base64 photo strings
+  layout,          // 'strip-3' | 'strip-4' | 'grid-4'
+  theme,           // Theme config object (colors, texts, custom logo, frameOverlay)
+  filterCss,       // CSS filter string
+  stickers = [],   // Array of { id, char, x, y, size } (normalized 0-1 coords)
   customTitle,
   customSubtitle,
   showDate = true
 }) {
-  const safeTheme = theme || {};
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
-  const isGrid = layout?.id === 'grid-4';
-  const photoCount = layout?.photoCount || 3;
+  const isGrid = layout.id === 'grid-4';
+  const photoCount = layout.photoCount || 3;
 
   // Pre-load all photo images & assets first to get natural dimensions
-  const loadedPhotos = await Promise.all((photos || []).map(p => loadImage(p)));
-  const loadedLogo = safeTheme.logoUrl ? await loadImage(safeTheme.logoUrl) : null;
-  const loadedOverlay = safeTheme.frameOverlay ? await loadImage(safeTheme.frameOverlay) : null;
+  const loadedPhotos = await Promise.all(photos.map(p => loadImage(p)));
+  const loadedLogo = theme.logoUrl ? await loadImage(theme.logoUrl) : null;
+  const loadedOverlay = theme.frameOverlay ? await loadImage(theme.frameOverlay) : null;
 
   // Set high resolution canvas dimensions (automatic template aspect ratio if custom)
   if (loadedOverlay && loadedOverlay.naturalWidth && loadedOverlay.naturalHeight) {
@@ -220,14 +219,14 @@ export async function renderPhotoStrip({
   const { width, height } = canvas;
 
   // 1. Draw Background
-  ctx.fillStyle = safeTheme.bgColor || '#ffffff';
+  ctx.fillStyle = theme.bgColor || '#ffffff';
   ctx.fillRect(0, 0, width, height);
 
   // Decorative border/card outline for presets
-  if (safeTheme.borderColor && !safeTheme.isCustom) {
-    ctx.strokeStyle = safeTheme.borderColor;
+  if (theme.borderColor && !theme.isCustom) {
+    ctx.strokeStyle = theme.borderColor;
     ctx.lineWidth = 12;
-    if (safeTheme.borderStyle === 'dashed') {
+    if (theme.borderStyle === 'dashed') {
       ctx.setLineDash([30, 20]);
     } else {
       ctx.setLineDash([]);
@@ -290,7 +289,7 @@ export async function renderPhotoStrip({
       ctx.stroke();
     });
 
-    if (!safeTheme.isCustom) {
+    if (!theme.isCustom) {
       const footerY = paddingTop + (slotH * 2) + gap + 40;
       const footerH = height - footerY - 40;
 
@@ -302,19 +301,19 @@ export async function renderPhotoStrip({
       }
 
       ctx.textAlign = 'center';
-      ctx.fillStyle = safeTheme.accentColor || safeTheme.textColor || '#000000';
+      ctx.fillStyle = theme.accentColor || theme.textColor || '#000000';
       ctx.font = 'bold 52px "Outfit", sans-serif';
-      ctx.fillText(customTitle || safeTheme.badgeText || 'PHOTOBOOTH MEMORIES', width / 2, footerY + 50);
+      ctx.fillText(customTitle || theme.badgeText || 'PHOTOBOOTH MEMORIES', width / 2, footerY + 50);
 
-      ctx.fillStyle = safeTheme.textColor || '#64748b';
+      ctx.fillStyle = theme.textColor || '#64748b';
       ctx.font = '500 32px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText(customSubtitle || safeTheme.subText || 'School Edition', width / 2, footerY + 105);
+      ctx.fillText(customSubtitle || theme.subText || 'School Edition', width / 2, footerY + 105);
 
       if (showDate) {
         const now = new Date();
         const dateStr = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
         ctx.font = '600 24px monospace';
-        ctx.fillStyle = safeTheme.accentColor || '#f59e0b';
+        ctx.fillStyle = theme.accentColor || '#f59e0b';
         ctx.fillText(`• ${dateStr} •`, width / 2, footerY + 150);
       }
     }
@@ -323,7 +322,7 @@ export async function renderPhotoStrip({
     // Vertical Strip Layout (3 or 4 photos)
     const paddingX = Math.round(width * 0.065);
     const paddingTop = Math.round(height * 0.025);
-    const footerH = safeTheme.isCustom ? Math.round(height * 0.02) : Math.round(height * 0.12);
+    const footerH = theme.isCustom ? Math.round(height * 0.02) : Math.round(height * 0.12);
     const availableH = height - paddingTop - footerH;
     const gap = Math.round(height * 0.012);
     const totalGaps = (photoCount - 1) * gap;
@@ -354,7 +353,7 @@ export async function renderPhotoStrip({
       ctx.stroke();
     }
 
-    if (!safeTheme.isCustom) {
+    if (!theme.isCustom) {
       const footerStartY = height - footerH + 40;
 
       if (loadedLogo) {
@@ -367,20 +366,20 @@ export async function renderPhotoStrip({
       const textStartY = loadedLogo ? footerStartY + 130 : footerStartY + 60;
 
       ctx.textAlign = 'center';
-      ctx.fillStyle = safeTheme.accentColor || safeTheme.textColor || '#eab308';
+      ctx.fillStyle = theme.accentColor || theme.textColor || '#eab308';
       ctx.font = 'bold 54px "Outfit", sans-serif';
-      ctx.fillText(customTitle || safeTheme.badgeText || 'PHOTOBOOTH', width / 2, textStartY);
+      ctx.fillText(customTitle || theme.badgeText || 'PHOTOBOOTH', width / 2, textStartY);
 
-      ctx.fillStyle = safeTheme.textColor || '#ffffff';
+      ctx.fillStyle = theme.textColor || '#ffffff';
       ctx.font = '500 34px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText(customSubtitle || safeTheme.subText || 'Class of 2026', width / 2, textStartY + 60);
+      ctx.fillText(customSubtitle || theme.subText || 'Class of 2026', width / 2, textStartY + 60);
 
       if (showDate) {
         const now = new Date();
         const dateStr = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
         const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
         ctx.font = '600 26px monospace';
-        ctx.fillStyle = safeTheme.accentColor || '#f59e0b';
+        ctx.fillStyle = theme.accentColor || '#f59e0b';
         ctx.fillText(`${dateStr} • ${timeStr}`, width / 2, textStartY + 115);
       }
 

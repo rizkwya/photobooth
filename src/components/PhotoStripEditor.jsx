@@ -8,7 +8,7 @@ import { savePhotoToStore } from '../utils/photoStorage';
 export default function PhotoStripEditor({
   capturedPhotos,
   selectedLayout,
-  themes = [],
+  themes,
   activeThemeId,
   onNewSession
 }) {
@@ -17,7 +17,7 @@ export default function PhotoStripEditor({
   const [qrDataUrl, setQrDataUrl] = useState('');
   const [photoId, setPhotoId] = useState('');
 
-  const activeTheme = themes?.find(t => t.id === activeThemeId) || themes?.[0] || null;
+  const activeTheme = themes.find(t => t.id === activeThemeId) || themes[0];
 
   useEffect(() => {
     let isCancelled = false;
@@ -28,11 +28,11 @@ export default function PhotoStripEditor({
         const result = await renderPhotoStrip({
           photos: capturedPhotos,
           layout: selectedLayout,
-          theme: activeTheme || {},
+          theme: activeTheme,
           filterCss: 'none',
           stickers: [],
-          customTitle: activeTheme?.badgeText || activeTheme?.name || 'PHOTOBOOTH',
-          customSubtitle: activeTheme?.subText || '',
+          customTitle: activeTheme.badgeText,
+          customSubtitle: activeTheme.subText,
           showDate: true
         });
 
