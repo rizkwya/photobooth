@@ -86,7 +86,7 @@ export default function PhotoboothPage({
           {/* Brand Header */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '6px' }}>
             <h1 style={{ fontSize: '18px', fontWeight: 700, margin: 0, color: '#1d2327', letterSpacing: '0.04em' }}>
-              MULTIMEDIA SMAVEN
+              Multimedia SMAVEN x IT Club SMAVEN
             </h1>
           </div>
 

@@ -504,7 +504,7 @@ export default function AdminTemplatesPage({
           {/* Brand Header */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '4px' }}>
             <h1 style={{ fontSize: '18px', fontWeight: 700, margin: 0, color: '#1d2327', letterSpacing: '0.04em' }}>
-              MULTIMEDIA SMAVEN
+              Multimedia SMAVEN x IT Club SMAVEN
             </h1>
           </div>
 
@@ -644,7 +644,7 @@ export default function AdminTemplatesPage({
 
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <span style={{ fontSize: '13px', fontWeight: 700, color: '#ffffff', letterSpacing: '0.04em' }}>
-            MULTIMEDIA SMAVEN
+            Multimedia SMAVEN x IT Club SMAVEN
           </span>
         </div>
       </header>
@@ -667,11 +667,11 @@ export default function AdminTemplatesPage({
         {/* Left WP Sidebar (w-60 min-h-screen) */}
         <aside className={`wp-sidebar ${isMobileMenuOpen ? 'open' : ''}`}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {/* Brand Header Inside Sidebar (Title: MULTIMEDIA SMAVEN - Desktop Look) */}
+            {/* Brand Header Inside Sidebar (Title: Multimedia SMAVEN x IT Club SMAVEN - Desktop Look) */}
             <div className="wp-sidebar-brand">
               <div>
                 <h1 style={{ fontSize: '13px', fontWeight: 700, margin: 0, color: '#ffffff', letterSpacing: '0.04em' }}>
-                  MULTIMEDIA SMAVEN
+                  Multimedia SMAVEN x IT Club SMAVEN
                 </h1>
               </div>
             </div>

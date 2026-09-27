@@ -103,8 +103,8 @@ export default function MobileDownloadPage() {
     }}>
       {/* Mobile Header */}
       <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-        <h1 style={{ fontSize: '1.25rem', fontWeight: 800, margin: 0, letterSpacing: '0.04em', color: '#1d2327' }}>
-          MULTIMEDIA SMAVEN
+        <h1 style={{ fontSize: '1.2rem', fontWeight: 800, margin: 0, letterSpacing: '0.02em', color: '#1d2327' }}>
+          Multimedia SMAVEN x IT Club SMAVEN
         </h1>
         <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: '4px 0 0' }}>
           Unduh hasil foto strip ke galeri ponsel Anda

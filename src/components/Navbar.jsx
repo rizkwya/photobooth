@@ -36,23 +36,12 @@ export default function Navbar({
         </div>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '1.1rem', fontWeight: 700, color: 'var(--text-main)' }}>
-              SnapSchool
-            </span>
-            <span style={{
-              background: 'var(--bg-surface-hover)',
-              color: 'var(--text-secondary)',
-              border: '1px solid var(--border-subtle)',
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              padding: '2px 8px',
-              borderRadius: 'var(--radius-sm)'
-            }}>
-              Kiosk Studio
+            <span style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--text-main)' }}>
+              Multimedia SMAVEN x IT Club SMAVEN
             </span>
           </div>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>
-            Photobooth Acara Sekolah
+            Photobooth Studio
           </p>
         </div>
       </div>

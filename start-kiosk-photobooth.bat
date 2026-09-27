@@ -1,6 +1,6 @@
 @echo off
 echo ========================================================
-echo   MENJALANKAN SNAPSCHOOL PHOTOBOOTH (KIOSK SILENT PRINT)
+echo   MENJALANKAN MULTIMEDIA SMAVEN x IT CLUB SMAVEN PHOTOBOOTH
 echo ========================================================
 echo.
 echo Mode: Cetak Otomatis Tanpa Dialog / Setting Popup
