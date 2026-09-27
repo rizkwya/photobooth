@@ -15,14 +15,14 @@ export default function App() {
   });
   const [selectedLayout, setSelectedLayout] = useState(PHOTO_LAYOUTS[0]);
 
-  // Load saved custom themes from IndexedDB on startup
+  // Load saved custom themes from IndexedDB & Supabase Cloud on startup & window focus
   useEffect(() => {
     let mounted = true;
     const loadThemes = async () => {
       try {
         const customThemes = await getAllCustomThemesFromDB();
-        if (mounted && customThemes && customThemes.length > 0) {
-          const merged = [...DEFAULT_THEMES, ...customThemes];
+        if (mounted) {
+          const merged = [...DEFAULT_THEMES, ...(customThemes || [])];
           setThemes(merged);
           
           // Verify if active theme exists in merged themes, fallback if needed
@@ -34,12 +34,16 @@ export default function App() {
           }
         }
       } catch (err) {
-        console.error('Failed to load custom themes from DB:', err);
+        console.error('Failed to load custom themes from DB/Cloud:', err);
       }
     };
 
     loadThemes();
-    return () => { mounted = false; };
+    window.addEventListener('focus', loadThemes);
+    return () => {
+      mounted = false;
+      window.removeEventListener('focus', loadThemes);
+    };
   }, []);
 
   const handleSetActiveTheme = (themeId) => {
@@ -58,7 +62,9 @@ export default function App() {
   const handleSaveTheme = async (newTheme, setAsActive = true) => {
     try {
       await saveCustomThemeToDB(newTheme);
-      setThemes(prev => [...prev.filter(t => t.id !== newTheme.id), newTheme]);
+      const customThemes = await getAllCustomThemesFromDB();
+      const merged = [...DEFAULT_THEMES, ...(customThemes || [])];
+      setThemes(merged);
       if (setAsActive || !activeThemeId) {
         handleSetActiveTheme(newTheme.id);
       }

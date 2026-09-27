@@ -199,7 +199,7 @@ export const getAllPhotosFromStore = async () => {
 
       if (!error && data && data.length > 0) {
         for (const file of data) {
-          if (file.name && file.name.endsWith('.png')) {
+          if (file.name && file.name.endsWith('.png') && !file.name.startsWith('themes') && !file.name.startsWith('theme_') && !file.name.startsWith('custom-')) {
             const id = file.name.replace('.png', '');
             if (!deletedSet.has(id)) {
               const { data: urlData } = supabase.storage.from(STORAGE_BUCKET).getPublicUrl(file.name);
