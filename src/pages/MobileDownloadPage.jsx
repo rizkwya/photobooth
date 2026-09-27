@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Download, Camera, RefreshCw, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { Download, RefreshCw, AlertCircle, CheckCircle2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { getPhotoFromStore } from '../utils/photoStorage';
 
@@ -67,38 +67,17 @@ export default function MobileDownloadPage() {
       }
 
       const fileName = `photobooth-${id || 'smaven'}.png`;
-      const file = new File([blob], fileName, { type: 'image/png' });
 
-      // 1. Native Web Share API (Save directly to iOS Camera Roll / Android Photos)
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        try {
-          await navigator.share({
-            files: [file],
-            title: 'Hasil Foto MULTIMEDIA SMAVEN',
-            text: 'Simpan foto strip ke galeri HP'
-          });
-          setSavedSuccess(true);
-          setTimeout(() => setSavedSuccess(false), 4000);
-          setDownloading(false);
-          return;
-        } catch (shareErr) {
-          if (shareErr.name === 'AbortError') {
-            setDownloading(false);
-            return;
-          }
-          console.warn('Web share cancelled or unsupported, fallback to direct download');
-        }
-      }
-
-      // 2. Direct Blob Download (Forces browser download directly into files/gallery)
+      // Direct Chrome / Browser File Download (triggers direct download bar in Chrome)
       const blobUrl = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = blobUrl;
       link.download = fileName;
+      link.setAttribute('download', fileName);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      setTimeout(() => URL.revokeObjectURL(blobUrl), 3000);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 4000);
 
       setSavedSuccess(true);
       setTimeout(() => setSavedSuccess(false), 4000);
@@ -203,7 +182,7 @@ export default function MobileDownloadPage() {
                 marginBottom: '10px'
               }}>
                 <CheckCircle2 size={16} />
-                <span>Foto berhasil disimpan ke perangkat!</span>
+                <span>Foto berhasil diunduh ke perangkat!</span>
               </div>
             )}
 
