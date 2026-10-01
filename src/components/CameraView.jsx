@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Camera, RefreshCw, AlertCircle } from 'lucide-react';
+import { Camera, RefreshCw, AlertCircle, ChevronLeft } from 'lucide-react';
 import { playCountdownBeep, playFinalBeep, playShutterSound, playSuccessSound } from '../utils/soundEffects';
 
 export default function CameraView({
   selectedLayout,
   onCompleteCapture,
-  triggerFlash
+  triggerFlash,
+  onBack
 }) {
   const videoRef = useRef(null);
   const [devices, setDevices] = useState([]);
@@ -276,6 +277,45 @@ export default function CameraView({
               transform: isMirrored ? 'scaleX(-1)' : 'none'
             }}
           />
+
+          {/* Back to Template Selection Button */}
+          {onBack && !isShooting && (
+            <button
+              onClick={onBack}
+              title="Kembali dan pilih bingkai lain"
+              style={{
+                position: 'absolute',
+                top: '18px',
+                left: '18px',
+                zIndex: 35,
+                background: 'rgba(15, 23, 42, 0.75)',
+                color: '#f8fafc',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '999px',
+                padding: '8px 16px',
+                fontSize: '0.85rem',
+                fontWeight: 600,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                cursor: 'pointer',
+                backdropFilter: 'blur(8px)',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                transition: 'all 0.15s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(15, 23, 42, 0.95)';
+                e.currentTarget.style.transform = 'scale(1.02)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(15, 23, 42, 0.75)';
+                e.currentTarget.style.transform = 'scale(1)';
+              }}
+            >
+              <ChevronLeft size={16} />
+              <span>Ganti Bingkai</span>
+            </button>
+          )}
 
           {/* Safe Zone Framing Guide (Area Aman Terluar) */}
           <div style={{
